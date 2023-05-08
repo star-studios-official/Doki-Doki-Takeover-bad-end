@@ -403,6 +403,26 @@ class PlayState extends MusicBeatState
 	var libVignette:BGSprite;
 	var grpPopups = new FlxTypedGroup<BGSprite>();
 
+	// Bad Ending
+	var daStatic:BGSprite;
+	var inthenotepad:BGSprite;
+	var notepadoverlay:BGSprite;
+	var stageStatic:BGSprite;
+	private var staticAlpha:Float = 0;
+
+	var swagShader:ColorSwap = new ColorSwap();
+
+	var evilSpace:FlxBackdrop;
+	var evilClubBG:BGSprite;
+	var evilClubBGScribbly:BGSprite;
+	var ruinedClubBG:BGSprite;
+	var glitchfront:BGSprite;
+	var glitchback:BGSprite;
+	var evilPoem:BGSprite;
+	var poemTransition:BGSprite;
+	var closetCloseUp:BGSprite;
+
+
 	var altAnim:String = "";
 	var fc:Bool = true;
 
@@ -1845,6 +1865,189 @@ class PlayState extends MusicBeatState
 						funnySprite.cameras = [camHUD];
 					}
 
+				}
+			case 'clubroomevil': // DDTO BAD ENDING
+				{
+					if (!SaveData.lowEnd)
+					{
+						evilSpace = new FlxBackdrop(Paths.image('bigmonika/Sky'), 0.1, 0.1);
+						evilSpace.velocity.set(-10, 0);
+						evilSpace.lowestCamZoom = 0.8;
+						evilSpace.antialiasing = SaveData.globalAntialiasing;
+						add(evilSpace);
+					}
+
+					evilClubBG = new BGSprite('bigmonika/BG', -220, -110, 1, 1);
+					evilClubBG.setGraphicSize(Std.int(evilClubBG.width * 1.3));
+					add(evilClubBG);
+				}
+			case 'stagnant': // hueh
+				{
+					closet = new BGSprite('clubroom/DDLCfarbg', -700, -520, 0.9, 0.9);
+					closet.setGraphicSize(Std.int(closet.width * 1.6));
+					closet.updateHitbox();
+					add(closet);
+
+					clubroom = new BGSprite('clubroom/DDLCbg', -700, -520, 1, 0.9);
+					clubroom.setGraphicSize(Std.int(clubroom.width * 1.6));
+					clubroom.updateHitbox();
+					add(clubroom);
+
+					if (!SaveData.lowEnd)
+					{
+						deskfront = new BGSprite('clubroom/DesksFront', -700, -520, 1.3, 0.9);
+						deskfront.setGraphicSize(Std.int(deskfront.width * 1.6));
+						deskfront.updateHitbox();
+
+						evilSpace = new FlxBackdrop(Paths.image('bigmonika/Sky'), 0.1, 0.1);
+						evilSpace.velocity.set(-10, 0);
+						evilSpace.lowestCamZoom = 0.8;
+						evilSpace.antialiasing = SaveData.globalAntialiasing;
+						evilSpace.visible = false;
+						add(evilSpace);
+					}
+
+					evilClubBG = new BGSprite('bigmonika/BG', -220, -110, 1, 1);
+					evilClubBG.setGraphicSize(Std.int(evilClubBG.width * 1.3));
+					evilClubBG.visible = false;
+					add(evilClubBG);
+
+					evilClubBGScribbly = new BGSprite('BGsketch', -220, -110, 1, 1, ['BGSketch'], true);
+					evilClubBGScribbly.setGraphicSize(Std.int(evilClubBGScribbly.width * 1.3));
+					evilClubBGScribbly.visible = false;
+					evilClubBGScribbly.alpha = 0.0001;
+					add(evilClubBGScribbly);
+
+					evilPoem = new BGSprite('PaperBG', -220, -110, 1, 1, ['PaperBG'], true);
+					evilPoem.setGraphicSize(Std.int(evilPoem.width * 1.3));
+					evilPoem.visible = false;
+					add(evilPoem);
+
+					poemTransition = new BGSprite('PoemTransition', 0, 0, 1, 1, ['poemtransition']);
+					poemTransition.cameras = [camHUD];
+					poemTransition.screenCenter();
+					poemTransition.visible = false;
+					add(poemTransition);
+				}
+			case 'markov':
+				{
+					if (!SaveData.lowEnd)
+					{
+						evilSpace = new FlxBackdrop(Paths.image('bigmonika/Sky'), 0.1, 0.1);
+						evilSpace.velocity.set(-10, 0);
+						evilSpace.lowestCamZoom = 0.8;
+						evilSpace.antialiasing = SaveData.globalAntialiasing;
+						add(evilSpace);
+					}
+
+					evilClubBG = new BGSprite('bigmonika/BG', -220, -110, 1, 1);
+					evilClubBG.setGraphicSize(Std.int(evilClubBG.width * 1.3));
+					add(evilClubBG);
+
+					evilClubBGScribbly = new BGSprite('BGsketch', -220, -110, 1, 1, ['BGSketch'], true);
+					evilClubBGScribbly.setGraphicSize(Std.int(evilClubBGScribbly.width * 1.3));
+					evilClubBGScribbly.visible = false;
+					evilClubBGScribbly.alpha = 0;
+					add(evilClubBGScribbly);
+
+					evilPoem = new BGSprite('PaperBG', -220, -110, 1, 1, ['PaperBG'], true);
+					evilPoem.setGraphicSize(Std.int(evilPoem.width * 1.3));
+					evilPoem.visible = false;
+					add(evilPoem);
+
+					closetCloseUp = new BGSprite('ClosetBG', -250, 0, 1, 1);
+					closetCloseUp.setGraphicSize(Std.int(closetCloseUp.width * 0.85));
+					closetCloseUp.updateHitbox();
+					closetCloseUp.visible = false;
+					add(closetCloseUp);
+				}
+			case 'home':
+				{
+					swagShader = new ColorSwap();
+					swagShader.saturation = -100;
+
+					stageStatic = new BGSprite('ruinedclub/HomeStatic', 0, 0, 0, 0, ['HomeStatic'], true);
+					stageStatic.screenCenter();
+					stageStatic.y = -140;
+					stageStatic.visible = false;
+					add(stageStatic);
+
+					if (!SaveData.lowEnd)
+					{
+						evilSpace = new FlxBackdrop(Paths.image('bigmonika/Sky'), 0.1, 0.1);
+						evilSpace.velocity.set(-10, 0);
+						evilSpace.lowestCamZoom = 0.8;
+						evilSpace.antialiasing = SaveData.globalAntialiasing;
+						add(evilSpace);
+					}
+
+					bakaOverlay = new BGSprite('BakaBGDoodles', 0, 0, 1, 1, ['Normal Overlay'], true);
+					bakaOverlay.animation.addByPrefix('hueh', 'HOME Overlay', 24, false);
+					bakaOverlay.antialiasing = SaveData.globalAntialiasing;
+					bakaOverlay.visible = true;
+					bakaOverlay.alpha = 0.0001;
+					bakaOverlay.cameras = [camHUD];
+					bakaOverlay.setGraphicSize(Std.int(FlxG.width));
+					bakaOverlay.updateHitbox();
+					bakaOverlay.screenCenter();
+					add(bakaOverlay);
+
+					inthenotepad = new BGSprite('notepad', 0, 0, 1, 1);
+					inthenotepad.visible = false;
+					add(inthenotepad);
+
+					notepadoverlay = new BGSprite('notepad_overlay', 0, 0, 1, 1);
+					notepadoverlay.visible = false;
+
+					closet = new BGSprite('clubroom/DDLCfarbg', -700, -520, 0.9, 0.9);
+					closet.setGraphicSize(Std.int(closet.width * 1.6));
+					closet.updateHitbox();
+					closet.shader = swagShader.shader;
+					add(closet);
+
+					clubroom = new BGSprite('clubroom/DDLCbg', -700, -520, 1, 0.9);
+					clubroom.setGraphicSize(Std.int(clubroom.width * 1.6));
+					clubroom.updateHitbox();
+					clubroom.shader = swagShader.shader;
+					add(clubroom);
+
+					evilClubBG = new BGSprite('bigmonika/BG', -220, -110, 1, 1);
+					evilClubBG.setGraphicSize(Std.int(evilClubBG.width * 1.3));
+					evilClubBG.visible = false;
+					add(evilClubBG);
+
+					evilPoem = new BGSprite('PaperBG', -220, -110, 1, 1, ['PaperBG'], true);
+					evilPoem.setGraphicSize(Std.int(evilPoem.width * 1.3));
+					evilPoem.visible = false;
+					add(evilPoem);
+
+					glitchback = new BGSprite('ruinedclub/glitchback1', -220, -110, 0.6, 1);
+					glitchback.setGraphicSize(Std.int(glitchback.width * 1.3));
+					glitchback.visible = false;
+					add(glitchback);
+
+					ruinedClubBG = new BGSprite('ruinedclub/BG', -220, -110, 1, 1);
+					ruinedClubBG.setGraphicSize(Std.int(ruinedClubBG.width * 1.3));
+					ruinedClubBG.visible = false;
+					add(ruinedClubBG);
+
+					glitchfront = new BGSprite('ruinedclub/glitchfront1', -220, -110, 1.2, 1);
+					glitchfront.setGraphicSize(Std.int(glitchfront.width * 1.3));
+					glitchfront.visible = false;
+
+					evilClubBGScribbly = new BGSprite('BGsketch', -220, -110, 1, 1, ['BGSketch'], true);
+					evilClubBGScribbly.setGraphicSize(Std.int(evilClubBGScribbly.width * 1.3));
+					evilClubBGScribbly.visible = false;
+					evilClubBGScribbly.alpha = 0;
+					add(evilClubBGScribbly);
+
+					if (!SaveData.lowEnd)
+					{
+						deskfront = new BGSprite('clubroom/DesksFront', -700, -520, 1.3, 0.9);
+						deskfront.setGraphicSize(Std.int(deskfront.width * 1.6));
+						deskfront.updateHitbox();
+						deskfront.shader = swagShader.shader;
+					}
 				}
 		}
 
