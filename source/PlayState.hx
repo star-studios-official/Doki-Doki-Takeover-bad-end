@@ -1866,11 +1866,11 @@ class PlayState extends MusicBeatState
 					}
 
 				}
-			case 'clubroomevil': // DDTO BAD ENDING
+			case 'clubroombadending': // DDTO BAD ENDING
 				{
 					if (!SaveData.lowEnd)
 					{
-						evilSpace = new FlxBackdrop(Paths.image('bigmonika/Sky'), 0.1, 0.1);
+						evilSpace = new FlxBackdrop(Paths.image('bigmonika/SkyEvil'), 0.1, 0.1);
 						evilSpace.velocity.set(-10, 0);
 						evilSpace.lowestCamZoom = 0.8;
 						evilSpace.antialiasing = SaveData.globalAntialiasing;

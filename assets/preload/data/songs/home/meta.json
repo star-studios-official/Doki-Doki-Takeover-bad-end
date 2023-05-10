@@ -1,0 +1,10 @@
+{
+    "song": {
+        "name": "Home",
+        "artist": "Kallionic",
+        "icon": "pen-evil",
+        "pause": "evilMenu",
+        "introDialogue": "",
+        "endDialogue": ""
+    }
+}
