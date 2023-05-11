@@ -17,6 +17,9 @@ class NoteSplash extends FlxSprite
 			case 'lib':
 				frames = Paths.getSparrowAtlas('libbie_Splash');
 				allowRotation = false;
+			case 'sketch':
+				frames = Paths.getSparrowAtlas('poemUI/noteSplashes');
+				allowRotation = false;
 			case 'pixel':
 				frames = Paths.getSparrowAtlas('pixel_Splash');
 				scale.set(6, 6);

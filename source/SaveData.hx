@@ -100,6 +100,8 @@ class SaveData
 	public static var yamYuri:Null<Bool> = false;
 	public static var yamLoss:Null<Bool> = false;
 	public static var sideStatus:Array<String> = [];
+	public static var beatBadEnding:Null<Bool> = false;
+	public static var badEndingSelected:Null<Bool> = false;
 
 	// Popups
 	public static var popupPrologue:Null<Bool> = false;
@@ -113,6 +115,7 @@ class SaveData
 	public static var popupSide:Null<Bool> = false;
 	public static var popupEpiphany:Null<Bool> = false;
 	public static var popupLibitina:Null<Bool> = false;
+	public static var warningBadEnding:Null<Bool> = false;
 
 	// Controls
 	public static var upBind:String = 'W';
@@ -207,6 +210,7 @@ class SaveData
 		unlockedEpiphany = unlock;
 		sideStatus = unlock ? ['love n funkin', 'constricted', 'catfight', 'wilted'] : [];
 		weekUnlocked = unlock ? 10 : 1;
+		badEndingSelected = unlock;
 
 		// popups
 		popupPrologue = unlock;
@@ -220,12 +224,14 @@ class SaveData
 		popupSide = unlock;
 		popupEpiphany = unlock;
 		popupLibitina = unlock;
+		warningBadEnding = unlock;
 
 		// extra
 		beatEpiphany = unlock;
 		beatCatfight = unlock;
 		beatVA11HallA = unlock;
 		beatLibitina = unlock;
+		beatBadEnding = unlock;
 
 		save();
 	}

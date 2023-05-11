@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.input.mouse.FlxMouseEventManager;
 import Controls.KeyboardScheme;
 import haxe.Json;
@@ -27,24 +28,7 @@ import GameJolt.GameJoltAPI;
 
 using StringTools;
 
-typedef MenuCharacterData = 
-{
-	var name:String;
-	var spritePos:Array<Int>;
-	var atlas:String;
-	var prefix:String;
-
-	@:optional var scale:Array<Float>;
-	@:optional var frames:Int;
-	@:optional var looped:Bool;
-}
-
-typedef MenuCharacterJSON =
-{
-	var characters:Array<MenuCharacterData>;
-}
-
-class MainMenuState extends MusicBeatState
+class MainMenuStateBad extends MusicBeatState
 {
 	var curSelected:Int = 0;
 
@@ -54,7 +38,6 @@ class MainMenuState extends MusicBeatState
 	// Guessing this is a flixel update issue, but whatever. ~ Codexes
 	var mouseManager:FlxMouseEventManager = new FlxMouseEventManager();
 
-	var show:String = "";
 	var menuItems:FlxTypedGroup<FlxText>;
 
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'gallery', 'credits', 'options', 'exit'];
@@ -65,14 +48,11 @@ class MainMenuState extends MusicBeatState
 
 	var logo:FlxSprite;
 	var menu_character:FlxSprite;
-	var shaker:FlxSprite;
-	var addVally:Bool = false;
 
 	var backdrop:FlxBackdrop;
 	var logoBl:FlxSprite;
-	public static var menuCharJSON:MenuCharacterJSON;
 
-	public static var instance:MainMenuState;
+	public static var instance:MainMenuStateBad;
 
 	override function create()
 	{
@@ -85,25 +65,6 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
-		if (!SaveData.beatPrologue)
-		{
-			SaveData.weekUnlocked = 1;
-			optionShit.remove('freeplay');
-		}
-
-		if (!SaveData.beatProtag)
-			optionShit.remove('credits');
-
-		if (!SaveData.beatSide)
-			optionShit.remove('gallery');
-
-		if (!SaveData.beatVA11HallA && SaveData.beatSide)
-			addVally = true;
-
-		#if debug
-		addVally = true;
-		#end
-
 		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -111,90 +72,23 @@ class MainMenuState extends MusicBeatState
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('menuEvil'));
 			Conductor.changeBPM(120);
 		}
 
-		backdrop = new FlxBackdrop(Paths.image('scrollingBG'));
+		backdrop = new FlxBackdrop(Paths.image('scrolling_BG'));
 		backdrop.velocity.set(-40, -40);
 		backdrop.antialiasing = SaveData.globalAntialiasing;
-		backdrop.shader = new ColorMaskShader(0xFFFDFFFF, 0xFFFDDBF1);
+		//backdrop.shader = new ColorMaskShader(0xFFFDFFFF, 0xFFFDDBF1);
 		add(backdrop);
 
-		var menuString:String = Assets.getText(Paths.json('menuCharacters'));
-		var jsonFound:Bool = true;
-
-		try {
-			menuCharJSON = cast Json.parse(menuString);
-		} catch (ex) {
-			jsonFound = false;
-			trace("Couldn't find that file. What a blunder!");
-		}
-
-		var twenty:Array<String> = ['together1', 'yuri', 'natsuki', 'sayori', 'pixelmonika', 'senpai'];
-		var ten:Array<String> = ['sunnat', 'yuritabi', 'minusmonikapixel', 'yuriken', 'sayominus', 'cyrixstatic', 'zipori', 'nathaachama'];
-		var two:Array<String> = ['fumo'];
-
-		// Push certain strings into arrays after save checks here
-		if (SaveData.beatFestival)
-			twenty.push('protag');
-
-		if (SaveData.beatMonika)
-		{
-			ten.push('deeppoems');
-			ten.push('akimonika');
-			ten.push('indiehorror');
-		}
-
-		if (SaveData.unlockAntipathyCostume)
-			ten.push('nathank');
-
-		if (CoolUtil.flixelSaveCheck('ShadowMario', 'VS Impostor')) // amogus
-			ten.push('sayomongus');
-
-		var random:Float = Random.randNF();
-		if (random < 0.60) // 60% chance
-			show = selectMenuCharacter(twenty);
-		else if (random >= 0.60 && random < 0.98) // 38% chance
-			show = selectMenuCharacter(ten);
-		else // 2% chance 
-			show = selectMenuCharacter(two);
-		
-		if (jsonFound)
-		{
-			for (char in menuCharJSON.characters)
-			{
-				if (char.name == show)
-				{
-					// Found the character in the menuCharacter.json file
-					trace('found ${show} with ${random}');
-					menu_character = new FlxSprite(char.spritePos[0], char.spritePos[1]);
-					menu_character.frames = Paths.getSparrowAtlas(char.atlas);
-					if (char.scale != null)
-						menu_character.scale.set(char.scale[0], char.scale[1]);
-					menu_character.animation.addByPrefix('play', char.prefix, 
-						(char.frames != null ? char.frames : 24), (char.looped != null ? char.looped : false));
-					// Break the for loop so we can move on from this lol
-					break;
-				}
-			}
-		}
-
-		if (menu_character == null)
-		{
-			// Just gotta use the default together asset if that for-loop doesn't work
-			trace("For loop didn't work. Oh well!");
-			menu_character = new FlxSprite(490, 50);
-			menu_character.frames = Paths.getSparrowAtlas("menucharacters/dokitogetheralt");
-			menu_character.scale.set(0.77, 0.77);
-			menu_character.animation.addByPrefix('play', "Doki together club", 21, false);
-		}
+		menu_character = new FlxSprite(460, 0);
+		menu_character.loadGraphic(Paths.image('GhostDokis'));
 		menu_character.antialiasing = SaveData.globalAntialiasing;
 		menu_character.updateHitbox();
-		menu_character.animation.play('play');
 		add(menu_character);
 
-		logo = new FlxSprite(-260, 0).loadGraphic(Paths.image('Credits_LeftSide'));
+		logo = new FlxSprite(-260, 0).loadGraphic(Paths.image('Credits_LeftSide_Bad'));
 		logo.antialiasing = SaveData.globalAntialiasing;
 		add(logo);
 		if (firstStart)
@@ -210,7 +104,7 @@ class MainMenuState extends MusicBeatState
 			logo.x = -60;
 
 		logoBl = new FlxSprite(-160, -40);
-		logoBl.frames = Paths.getSparrowAtlas('DDLCStart_Screen_Assets');
+		logoBl.frames = Paths.getSparrowAtlas('logoBadEnding');
 		logoBl.antialiasing = SaveData.globalAntialiasing;
 		logoBl.scale.set(0.5, 0.5);
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
@@ -257,14 +151,6 @@ class MainMenuState extends MusicBeatState
 			mouseManager.add(menuItem, onMouseDown, null, onMouseOver);
 		}
 
-		shaker = new FlxSprite(1132, 538);
-		shaker.frames = Paths.getSparrowAtlas("shaker", 'preload');
-		shaker.animation.addByPrefix('play', "Shaker", 21, false);
-		shaker.antialiasing = SaveData.globalAntialiasing;
-		shaker.animation.play('play');
-		if (addVally)
-			add(shaker);
-
 		add(mouseManager);
 
 		var versionShit:FlxText = new FlxText(-350, FlxG.height - 24, 0, "v" + Application.current.meta.get('version'), 12);
@@ -300,16 +186,9 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin && acceptInput)
 		{
-			if (shaker != null && addVally && FlxG.mouse.overlaps(shaker) && FlxG.mouse.justPressed)
-				openSong();
-
 			if (logoBl != null && FlxG.mouse.overlaps(logoBl) && FlxG.mouse.justPressed)
 			{
-				if(!SaveData.warningBadEnding)
-					MusicBeatState.switchState(new WarningState());
-				else
-					MusicBeatState.switchState(new TitleStateBad());
-
+				MusicBeatState.switchState(new TitleState());
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 			}
 
@@ -353,11 +232,8 @@ class MainMenuState extends MusicBeatState
 		switch (daChoice)
 		{
 			case 'story mode':
-				MusicBeatState.switchState(new DokiStoryState());
+				loadStoryWeek();
 				trace("Story Menu Selected");
-			case 'freeplay':
-				MusicBeatState.switchState(new DokiFreeplayState());
-				trace("Freeplay Menu Selected");
 			case 'credits':
 				MusicBeatState.switchState(new CreditsState());
 				trace("Credits Menu Selected");
@@ -427,6 +303,46 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
+	function loadStoryWeek()
+	{
+		PlayState.storyPlaylist = ['stagnant', 'markov', 'home'];
+		PlayState.storyDifficulty = 1;
+
+		PlayState.ForceDisableDialogue = false;
+		PlayState.isStoryMode = true;
+		selectedSomethin = true;
+
+		var poop:String = Highscore.formatSong(PlayState.storyPlaylist[0], PlayState.storyDifficulty);
+
+		try
+		{
+			PlayState.SONG = Song.loadFromJson(poop, PlayState.storyPlaylist[0].toLowerCase());
+		}
+		catch (e)
+		{
+			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase(), PlayState.storyPlaylist[0].toLowerCase());
+		}
+
+		PlayState.storyWeek = 13;
+		PlayState.campaignScore = 0;
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			#if (FEATURE_MP4 || FEATURE_VIDEO)
+			var video:NetStreamHandler = new NetStreamHandler();
+			video.canSkip = SaveData.beatSayori;
+			video.skipKeys = [FlxKey.ESCAPE, FlxKey.ENTER];
+			video.playVideo(Paths.video('be-intro'), false, true);
+			video.finishCallback = function()
+			{
+				FlxG.camera.fade(FlxColor.BLACK, 0, false);
+				LoadingState.loadAndSwitchState(new PlayState(), true, true);
+			}
+			#else
+			LoadingState.loadAndSwitchState(new PlayState(), true, true);
+			#end
+			trace('bad ending selected');
+		});
+	}
 
 	function onMouseDown(spr:FlxSprite):Void
 	{
@@ -453,57 +369,5 @@ class MainMenuState extends MusicBeatState
 		super.beatHit();
 
 		logoBl.animation.play('bump', true);
-
-		if (!menu_character.animation.curAnim.looped && curBeat % 2 == 0)
-			menu_character.animation.play('play', true);
-
-		if (shaker != null)
-			shaker.animation.play('play');
-	}
-
-	function openSong()
-	{
-		acceptInput = false;
-		selectedSomethin = true;
-		FlxG.sound.play(Paths.sound('va11hallaSelect'));
-		FlxFlicker.flicker(shaker, 1, 0.06, false, false);
-
-		new FlxTimer().start(1, function(tmr:FlxTimer)
-		{
-			PlayState.SONG = Song.loadFromJson('drinks on me', 'drinks on me');
-			PlayState.storyDifficulty = 1;
-			PlayState.isStoryMode = true;
-			LoadingState.loadAndSwitchState(new PlayState());
-		});
-	}
-
-	function selectMenuCharacter(array:Array<String>):String
-	{
-		var index:Int = 0;
-		if (array.length >= 2)
-			index = Random.randUInt(0, array.length);
-
-		var char:String = '';
-		switch (array[index])
-		{
-			default:
-				char = array[index];
-			case 'together1':
-				if (SaveData.beatMonika)
-					char = 'together';
-			case 'pixelmonika':
-				if (SaveData.beatMonika)
-					char = 'monika';
-		}
-
-		// Just in case I messed something up
-		if (char == '')
-		{
-			if (SaveData.beatMonika) char = 'together';
-			else char = 'together1';
-			return char;
-		}
-
-		return char;
 	}
 }
