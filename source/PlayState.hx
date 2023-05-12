@@ -1174,6 +1174,18 @@ class PlayState extends MusicBeatState
 								space.scale.set(0.7, 0.7);
 								add(space);
 							}
+							case 'home':
+							{
+								swagShader = new ColorSwap();
+								swagShader.saturation = -100;
+
+								space = new FlxBackdrop(Paths.image('bigmonika/SkyEvil', 'doki'));
+								space.scrollFactor.set(0.1, 0.1);
+								space.velocity.set(-7, 0);
+								space.antialiasing = SaveData.globalAntialiasing;
+								space.scale.set(0.7, 0.7);
+								add(space);
+							}
 							case 'my confession' | 'obsession':
 							{
 								vignette = new FlxSprite().loadGraphic(Paths.image('vignette', 'doki'));
@@ -1264,7 +1276,7 @@ class PlayState extends MusicBeatState
 					clubroom.updateHitbox();
 					add(clubroom);
 
-					if (bgDokis != null)
+					if (bgDokis != null && (SONG.song.toLowerCase() != 'stagnant' || SONG.song.toLowerCase() != 'home'))
 						add(bgDokis);
 
 					if (SONG.song.toLowerCase() == 'neet')
@@ -1305,6 +1317,20 @@ class PlayState extends MusicBeatState
 						poemTransition.screenCenter();
 						poemTransition.visible = false;
 						add(poemTransition);
+					}
+
+					if (SONG.song.toLowerCase() == 'home')
+					{
+						stageStatic = new BGSprite('ruinedclub/HomeStatic', 'doki', 0, 0, 0, 0, ['HomeStatic'], true);
+						stageStatic.screenCenter();
+						stageStatic.y = -140;
+						stageStatic.visible = false;
+						add(stageStatic);
+
+						clubmainlight.shader = swagShader.shader;
+						closet.shader = swagShader.shader;
+						clubroom.shader = swagShader.shader;
+						deskfront.shader = swagShader.shader;
 					}
 
 					if (sparkleBG != null)
@@ -1936,54 +1962,12 @@ class PlayState extends MusicBeatState
 				}
 			case 'home':
 				{
-					swagShader = new ColorSwap();
-					swagShader.saturation = -100;
-
-					stageStatic = new BGSprite('ruinedclub/HomeStatic', 'doki', 0, 0, 0, 0, ['HomeStatic'], true);
-					stageStatic.screenCenter();
-					stageStatic.y = -140;
-					stageStatic.visible = false;
-					add(stageStatic);
-
-					if (!SaveData.lowEnd)
-					{
-						space = new FlxBackdrop(Paths.image('bigmonika/SkyEvil', 'doki'));
-						space.scrollFactor.set(0.1, 0.1);
-						space.velocity.set(-7, 0);
-						space.antialiasing = SaveData.globalAntialiasing;
-						space.scale.set(0.7, 0.7);
-						add(space);
-					}
-
-					bakaOverlay = new BGSprite('clubroom/BakaBGDoodlesEvil', 'doki', 0, 0, 1, 1, ['Normal Overlay'], true);
-					bakaOverlay.animation.addByPrefix('hueh', 'HOME Overlay', 24, false);
-					bakaOverlay.antialiasing = SaveData.globalAntialiasing;
-					bakaOverlay.visible = true;
-					bakaOverlay.alpha = 0.0001;
-					bakaOverlay.cameras = [camHUD];
-					bakaOverlay.setGraphicSize(Std.int(FlxG.width));
-					bakaOverlay.updateHitbox();
-					bakaOverlay.screenCenter();
-					add(bakaOverlay);
-
 					inthenotepad = new BGSprite('badending/notepad', 'doki', 0, 0, 1, 1);
 					inthenotepad.visible = false;
 					add(inthenotepad);
 
 					notepadoverlay = new BGSprite('badending/notepad_overlay', 'doki', 0, 0, 1, 1);
 					notepadoverlay.visible = false;
-
-					closet = new BGSprite('clubroom/DDLCfarbg', 'doki', -700, -520, 0.9, 0.9);
-					closet.setGraphicSize(Std.int(closet.width * 1.6));
-					closet.updateHitbox();
-					closet.shader = swagShader.shader;
-					add(closet);
-
-					clubroom = new BGSprite('clubroom/DDLCbg', 'doki', -700, -520, 1, 0.9);
-					clubroom.setGraphicSize(Std.int(clubroom.width * 1.6));
-					clubroom.updateHitbox();
-					clubroom.shader = swagShader.shader;
-					add(clubroom);
 
 					bg = new BGSprite('bigmonika/BG', 'doki', -220, -110, 1, 1);
 					bg.setGraphicSize(Std.int(bg.width * 1.3));
@@ -2043,6 +2027,24 @@ class PlayState extends MusicBeatState
 			bakaOverlay.antialiasing = SaveData.globalAntialiasing;
 			bakaOverlay.animation.addByPrefix('normal', 'Normal Overlay', 24, true);
 			bakaOverlay.animation.addByPrefix('party rock is', 'Rock Overlay', 24, true);
+			bakaOverlay.animation.play('normal');
+			bakaOverlay.scrollFactor.set();
+			bakaOverlay.visible = false;
+			bakaOverlay.alpha = 0.001;
+			bakaOverlay.cameras = [camHUD];
+			bakaOverlay.setGraphicSize(Std.int(FlxG.width / defaultHudZoom));
+			bakaOverlay.updateHitbox();
+			bakaOverlay.screenCenter();
+			add(bakaOverlay);
+		}
+
+		if (SONG.song.toLowerCase() == 'home' && !SaveData.lowEnd)
+		{
+			bakaOverlay = new FlxSprite(0, 0);
+			bakaOverlay.frames = Paths.getSparrowAtlas('clubroom/BakaBGDoodlesEvil', 'doki');
+			bakaOverlay.antialiasing = SaveData.globalAntialiasing;
+			bakaOverlay.animation.addByPrefix('normal', 'Normal Overlay', 24, true);
+			bakaOverlay.animation.addByPrefix('hueh', 'HOME Overlay', 24, true);
 			bakaOverlay.animation.play('normal');
 			bakaOverlay.scrollFactor.set();
 			bakaOverlay.visible = false;
@@ -3316,6 +3318,22 @@ class PlayState extends MusicBeatState
 				var video:NetStreamHandler = new NetStreamHandler();
 				video.canSkip = false;
 				video.playVideo(Paths.video('youregoingtophilly'));
+				#end
+			}
+			case 'beintro':
+			{
+				#if (FEATURE_MP4 || FEATURE_VIDEO)
+				var video:NetStreamHandler = new NetStreamHandler();
+				video.canSkip = false;
+				video.playVideo(Paths.video('be-intro'));
+				#end
+			}
+			case 'beend':
+			{
+				#if (FEATURE_MP4 || FEATURE_VIDEO)
+				var video:NetStreamHandler = new NetStreamHandler();
+				video.canSkip = false;
+				video.playVideo(Paths.video('be-ending'));
 				#end
 			}
 			case 'wiltedbgin':
@@ -5565,6 +5583,8 @@ class PlayState extends MusicBeatState
 							if (SaveData.sideStatus.length >= 4)
 								SaveData.beatSide = true;
 						}
+					case 13:
+						SaveData.beatBadEnding = true;
 				}
 
 				DokiStoryState.showPopUp = true;

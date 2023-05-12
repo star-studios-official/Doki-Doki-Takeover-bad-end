@@ -3,8 +3,8 @@
         "name": "Stagnant",
         "artist": "Matt$",
         "icon": "pen-evil",
-        "pause": "evilMenu",
-        "introDialogue": "",
+        "pause": "sayo-nara",
+        "introDialogue": "IntroDialogue",
         "endDialogue": ""
     }
 }

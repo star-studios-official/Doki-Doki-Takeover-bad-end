@@ -1,0 +1,14 @@
+{
+	"canSkip": false,
+	"startingMusic": "",
+	"initStyle": "normal",
+	"dialogue": 
+	[
+		{
+			"isCommand": true,
+			"name": "playcutscene",
+			"string": "beintro",
+			"duration": 46
+		}
+	]
+}

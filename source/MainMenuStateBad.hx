@@ -234,6 +234,10 @@ class MainMenuStateBad extends MusicBeatState
 			case 'story mode':
 				loadStoryWeek();
 				trace("Story Menu Selected");
+			case 'freeplay':
+				if(SaveData.beatBadEnding)
+					MusicBeatState.switchState(new FreeplayState());
+				trace("Freeplay Menu Selected");
 			case 'credits':
 				MusicBeatState.switchState(new CreditsState());
 				trace("Credits Menu Selected");
@@ -325,23 +329,9 @@ class MainMenuStateBad extends MusicBeatState
 
 		PlayState.storyWeek = 13;
 		PlayState.campaignScore = 0;
-		new FlxTimer().start(2, function(tmr:FlxTimer)
-		{
-			#if (FEATURE_MP4 || FEATURE_VIDEO)
-			var video:NetStreamHandler = new NetStreamHandler();
-			video.canSkip = SaveData.beatSayori;
-			video.skipKeys = [FlxKey.ESCAPE, FlxKey.ENTER];
-			video.playVideo(Paths.video('be-intro'), false, true);
-			video.finishCallback = function()
-			{
-				FlxG.camera.fade(FlxColor.BLACK, 0, false);
-				LoadingState.loadAndSwitchState(new PlayState(), true, true);
-			}
-			#else
-			LoadingState.loadAndSwitchState(new PlayState(), true, true);
-			#end
-			trace('bad ending selected');
-		});
+
+		LoadingState.loadAndSwitchState(new PlayState(), true, true);
+		trace('bad ending selected');
 	}
 
 	function onMouseDown(spr:FlxSprite):Void

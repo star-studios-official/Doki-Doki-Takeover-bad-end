@@ -3,8 +3,8 @@
         "name": "Home",
         "artist": "Kallionic",
         "icon": "pen-evil",
-        "pause": "evilMenu",
+        "pause": "natsuki-crazy",
         "introDialogue": "",
-        "endDialogue": ""
+        "endDialogue": "EndDialogue"
     }
 }
