@@ -4,7 +4,6 @@
         "artist": "Matt$",
         "icon": "pen-evil",
         "pause": "sayo-nara",
-        "introDialogue": "IntroDialogue",
-        "endDialogue": ""
+        "allowCountDown": false
     }
 }

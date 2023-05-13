@@ -181,8 +181,8 @@
 	"no_antialiasing": false,
 	"image": "characters/badending/SadBF_Assets",
 	"position": [
-		0,
-		370
+		5,
+		0
 	],
 	"healthicon": "bf-sad",
 	"flip_x": true,
@@ -192,8 +192,8 @@
 		145
 	],
 	"camera_position": [
-		20,
-		-40
+		0,
+		0
 	],
 	"sing_duration": 4,
 	"scale": 1,

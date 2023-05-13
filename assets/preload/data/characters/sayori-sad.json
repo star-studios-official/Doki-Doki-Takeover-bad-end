@@ -3,7 +3,7 @@
 		{
 			"offsets": [
 				181,
-				412
+				112
 			],
 			"loop": false,
 			"fps": 24,
@@ -14,7 +14,7 @@
 		{
 			"offsets": [
 				176,
-				397
+				97
 			],
 			"indices": [
 				2,
@@ -39,7 +39,7 @@
 		{
 			"offsets": [
 				188,
-				403
+				103
 			],
 			"indices": [
 				2,
@@ -64,7 +64,7 @@
 		{
 			"offsets": [
 				169,
-				398
+				98
 			],
 			"indices": [
 				2,
@@ -89,7 +89,7 @@
 		{
 			"offsets": [
 				179,
-				407
+				107
 			],
 			"indices": [
 				2,
@@ -115,8 +115,8 @@
 	"no_antialiasing": false,
 	"image": "characters/badending/SadSayo_Assets",
 	"position": [
-		250,
-		610
+		-50,
+		-280
 	],
 	"healthicon": "sayori-sad",
 	"flip_x": false,
@@ -126,8 +126,8 @@
 		142
 	],
 	"camera_position": [
-		-120,
-		-400
+		0,
+		0
 	],
 	"sing_duration": 4,
 	"scale": 1.1

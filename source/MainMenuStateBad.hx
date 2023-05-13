@@ -73,7 +73,7 @@ class MainMenuStateBad extends MusicBeatState
 		if (!FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('menuEvil'));
-			Conductor.changeBPM(120);
+			Conductor.changeBPM(82.5);
 		}
 
 		backdrop = new FlxBackdrop(Paths.image('scrolling_BG'));
@@ -82,10 +82,26 @@ class MainMenuStateBad extends MusicBeatState
 		//backdrop.shader = new ColorMaskShader(0xFFFDFFFF, 0xFFFDDBF1);
 		add(backdrop);
 
-		menu_character = new FlxSprite(460, 0);
-		menu_character.loadGraphic(Paths.image('GhostDokis'));
-		menu_character.antialiasing = SaveData.globalAntialiasing;
-		menu_character.updateHitbox();
+		var random:Int = FlxG.random.int(1, 100);
+		trace(random);
+
+		if (random == 64)
+		{
+			//Can't let my child go to waste :)
+			menu_character = new FlxSprite(-100, -250);
+			menu_character.loadGraphic(Paths.image('FumoEvil'));
+			menu_character.screenCenter();
+			menu_character.x += 100;
+			menu_character.antialiasing = SaveData.globalAntialiasing;
+			menu_character.updateHitbox();
+		}
+		else
+		{
+			menu_character = new FlxSprite(460, 0);
+			menu_character.loadGraphic(Paths.image('GhostDokis'));
+			menu_character.antialiasing = SaveData.globalAntialiasing;
+			menu_character.updateHitbox();
+		}
 		add(menu_character);
 
 		logo = new FlxSprite(-260, 0).loadGraphic(Paths.image('Credits_LeftSide_Bad'));

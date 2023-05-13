@@ -32,6 +32,7 @@ using StringTools;
 class FreeplayState extends MusicBeatState
 {
 	public static var instance:FreeplayState;
+	public var acceptInput:Bool = true;
 
 	var songs:Array<SongMetadataEvil> = [];
 
@@ -49,9 +50,7 @@ class FreeplayState extends MusicBeatState
 	var scoreBG:FlxSprite;
 	var scoreText:FlxText;
 	var lerpScore:Int = 0;
-	var lerpRating:Float = 0;
 	var intendedScore:Int = 0;
-	var intendedRating:Float = 0;
 
 	var songname:FlxText;
 	var vignette:FlxSprite;
@@ -146,7 +145,7 @@ class FreeplayState extends MusicBeatState
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 50, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -170,6 +169,7 @@ class FreeplayState extends MusicBeatState
 		#end
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
+		text.screenCenter(X);
 		text.scrollFactor.set();
 		add(text);
 		
@@ -198,12 +198,9 @@ class FreeplayState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, CoolUtil.boundTo(elapsed * 24, 0, 1)));
-		lerpRating = FlxMath.lerp(lerpRating, intendedRating, CoolUtil.boundTo(elapsed * 12, 0, 1));
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
-		if (Math.abs(lerpRating - intendedRating) <= 0.01)
-			lerpRating = intendedRating;
 
 		if (FlxG.sound.music != null && FlxG.sound.music.volume < 0.8)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -218,40 +215,39 @@ class FreeplayState extends MusicBeatState
 		var accepted = controls.ACCEPT;
 		var space = FlxG.keys.justPressed.SPACE;
 
-		var shiftMult:Int = 1;
-		if (FlxG.keys.pressed.SHIFT)
-			shiftMult = 3;
-
 		if (FlxG.keys.pressed.SHIFT)
 			isCharting = true;
 		else
 			isCharting = false;
 
-		if (rightP)
+		if (acceptInput)
 		{
-			changeSelection(-shiftMult);
-		}
-		if (leftP)
-		{
-			changeSelection(shiftMult);
-		}
+			if (rightP)
+			{
+				changeSelection(-1);
+			}
+			if (leftP)
+			{
+				changeSelection(1);
+			}
 
-		if (controls.BACK)
-		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuStateBad());
-		}
+			if (controls.BACK)
+			{
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				MusicBeatState.switchState(new MainMenuStateBad());
+			}
 
-		if (FlxG.keys.justPressed.M)
-		{
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			openSubState(new DokiModifierSubState());
-		}
+			if (FlxG.keys.justPressed.M)
+			{
+				FlxG.sound.play(Paths.sound('confirmMenu'));
+				openSubState(new DokiModifierSubState());
+			}
 
-		if (space && !SaveData.cacheSong)
-			playSong();
-		else if (accepted)
-			startsong();
+			if (space && !SaveData.cacheSong)
+				playSong();
+			else if (accepted)
+				startsong();
+		}
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;

@@ -217,7 +217,7 @@ class Note extends FlxSprite
 			skin = 'NOTE_assetsLibitina';
 
 		if (noteStyle == 'sketch' && noteType != 2)
-			skin = 'poemUI/NOTE_assets';
+			skin = 'NOTE_assetsPoem';
 
 		var animName:String = null;
 

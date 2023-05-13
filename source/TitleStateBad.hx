@@ -19,14 +19,11 @@ class TitleStateBad extends MusicBeatState
 
 	var blackScreen:FlxSprite;
 	var credGroup:FlxGroup;
-	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 
 	var tbdSpr:FlxSprite;
 
 	var curWacky:Array<String> = [];
-
-	var wackyImage:FlxSprite;
 
 	override public function create():Void
 	{
@@ -53,7 +50,7 @@ class TitleStateBad extends MusicBeatState
 		if (!initialized)
 		{
 			FlxG.sound.playMusic(Paths.music('menuEvil'), 0);
-			Conductor.changeBPM(120);
+			Conductor.changeBPM(82.5);
 			FlxG.sound.music.fadeIn(2, 0, 0.7);
 		}
 
@@ -101,11 +98,6 @@ class TitleStateBad extends MusicBeatState
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
-		credTextShit.screenCenter();
-
-		credTextShit.visible = false;
-
 		tbdSpr = new FlxSprite(0, FlxG.height * .45).loadGraphic(Paths.image('TBDLogoBW'));
 		tbdSpr.visible = false;
 		tbdSpr.setGraphicSize(Std.int(tbdSpr.width * 0.9));
@@ -113,8 +105,6 @@ class TitleStateBad extends MusicBeatState
 		tbdSpr.screenCenter(X);
 		tbdSpr.antialiasing = SaveData.globalAntialiasing;
 		add(tbdSpr);
-
-		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
 		if (initialized)
 			skipIntro();
