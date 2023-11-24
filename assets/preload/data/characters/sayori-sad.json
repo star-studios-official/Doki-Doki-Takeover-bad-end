@@ -115,8 +115,8 @@
 	"no_antialiasing": false,
 	"image": "characters/badending/SadSayo_Assets",
 	"position": [
-		-50,
-		-280
+		200,
+		-40
 	],
 	"healthicon": "sayori-sad",
 	"flip_x": false,
@@ -126,8 +126,8 @@
 		142
 	],
 	"camera_position": [
-		0,
-		0
+		-100,
+		-100
 	],
 	"sing_duration": 4,
 	"scale": 1.1

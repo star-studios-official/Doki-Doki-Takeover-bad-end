@@ -87,6 +87,15 @@ class Character extends FlxSprite
 	public var cameraPosition:Array<Float> = [0, 0];
 	public var holdTimer:Float = 0;
 
+	//Used on Character Editor
+	public var imageFile:String = '';
+	public var jsonScale:Float = 1;
+	public var noAntialiasing:Bool = false;
+	public var originalFlipX:Bool = false;
+	public var healthColorArray:Array<Int> = [255, 0, 0];
+	public var playerIcon:String = '';
+	public var costumes:String = '';
+
 	// https://github.com/ThatRozebudDude/FPS-Plus-Public/pull/11
 	public var initFacing:Int = FlxObject.RIGHT;
 	var initWidth:Float;
@@ -154,7 +163,9 @@ class Character extends FlxSprite
 					jsonLoad("costumes/" + charafile);
 				else
 					jsonLoad(charafile);
-			}	
+			}
+
+			costumes = json.costumes;
 		}
 			
 		if (Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
@@ -165,8 +176,6 @@ class Character extends FlxSprite
 		{
 			frames = Paths.getSparrowAtlas(json.image);
 		}
-
-		var imageFile:String = '';
 		imageFile = json.image;
 
 		if (!!json.flip_x)
@@ -177,9 +186,11 @@ class Character extends FlxSprite
 		{
 			initFacing = FlxObject.RIGHT;
 		}
+		originalFlipX = json.flip_x;
 
 		if (json.scale != 1)
 		{
+			jsonScale = json.scale;
 			setGraphicSize(Std.int(width * json.scale));
 			updateHitbox();
 		}
@@ -187,9 +198,10 @@ class Character extends FlxSprite
 		positionArray = json.position;
 		cameraPosition = json.camera_position;
 
-		if (isPlayer && json.playericon != null)
+		if (isPlayer && json.playericon != null) {
 			healthIcon = json.playericon;
-		else
+			playerIcon = json.playericon;
+		} else
 			healthIcon = json.healthicon;
 
 		singDuration = json.sing_duration;
@@ -205,8 +217,12 @@ class Character extends FlxSprite
 		winsound = json.win_sound;
 
 		antialiasing = !json.no_antialiasing && SaveData.globalAntialiasing;
+		noAntialiasing = antialiasing;
 
 		barColor = FlxColor.fromRGB(json.healthbar_colors[0], json.healthbar_colors[1], json.healthbar_colors[2]);
+
+		if(json.healthbar_colors != null && json.healthbar_colors.length > 2)
+			healthColorArray = json.healthbar_colors;
 
 		animationsArray = json.animations;
 		if (animationsArray != null && animationsArray.length > 0)
@@ -291,7 +307,7 @@ class Character extends FlxSprite
 		}
 	}
 
-	function quickAnimAdd(Name:String, Prefix:String)
+	public function quickAnimAdd(Name:String, Prefix:String)
 	{
 		animation.addByPrefix(Name, Prefix, 24, false);
 	}

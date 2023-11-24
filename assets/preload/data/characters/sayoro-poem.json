@@ -59,8 +59,8 @@
 	"no_antialiasing": false,
 	"image": "characters/badending/SayoHappyThoughts_Assets",
 	"position": [
-		0,
-		-280
+		-40,
+		-290
 	],
 	"healthicon": "sayori-poem",
 	"flip_x": false,
@@ -70,8 +70,8 @@
 		0
 	],
 	"camera_position": [
-		0,
-		0
+		-65,
+		-20
 	],
 	"sing_duration": 6,
 	"scale": 1

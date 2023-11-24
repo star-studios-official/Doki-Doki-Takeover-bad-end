@@ -306,6 +306,7 @@ class MainMenuState extends MusicBeatState
 			if (logoBl != null && FlxG.mouse.overlaps(logoBl) && FlxG.mouse.justPressed)
 			{
 				SaveData.badEndingSelected = true;
+				SaveData.save();
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				if(!SaveData.warningBadEnding)

@@ -79,6 +79,12 @@ class FreeplayState extends MusicBeatState
 
 		instance = this;
 
+		if (!FlxG.sound.music.playing && !SaveData.cacheSong)
+		{
+			FlxG.sound.playMusic(Paths.music('evilMenu'));
+			Conductor.changeBPM(82.5);
+		}
+
 		PlayState.isStoryMode = false;
 
 		#if FEATURE_DISCORD
@@ -167,7 +173,7 @@ class FreeplayState extends MusicBeatState
 		var leText:String = "Press M to open the Modifiers Menu / Press RESET to Reset your Score and Accuracy.";
 		var size:Int = 18;
 		#end
-		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
+		var text:FlxText = new FlxText(0, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.screenCenter(X);
 		text.scrollFactor.set();
@@ -261,29 +267,10 @@ class FreeplayState extends MusicBeatState
 
 		if (SaveData.flashing)
 		{
-			switch (songs[curSelected].songName.toLowerCase())
+			FlxFlicker.flicker(songname, 1, 0.06, false, false, function(flick:FlxFlicker)
 			{
-				case 'stagnant':
-					FlxFlicker.flicker(sayori, 1, 0.06, false, false, function(flick:FlxFlicker)
-					{
-						loadSong();
-					});
-				case 'home':
-					FlxFlicker.flicker(natsuki, 1, 0.06, false, false, function(flick:FlxFlicker)
-					{
-						loadSong();
-					});
-				case 'markov':
-					FlxFlicker.flicker(yuri, 1, 0.06, false, false, function(flick:FlxFlicker)
-					{
-						loadSong();
-					});
-				default:
-					FlxFlicker.flicker(sayori, 1, 0.06, false, false, function(flick:FlxFlicker)
-					{
-						loadSong();
-					});
-			}
+				loadSong();
+			});
 		}
 		else
 		{

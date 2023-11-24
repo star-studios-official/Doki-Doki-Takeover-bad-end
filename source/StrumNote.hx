@@ -44,6 +44,9 @@ class StrumNote extends FlxSprite
 		if (noteStyle == 'lib')
 			texture = 'NOTE_assetsLibitina';
 
+		if (noteStyle == 'sketch')
+			texture = 'NOTE_assetsPoem';
+
 		scrollFactor.set();
 	}
 

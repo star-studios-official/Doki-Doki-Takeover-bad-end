@@ -10,6 +10,10 @@ import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
 import openfl.media.Sound;
+#if FEATURE_FILESYSTEM
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -245,6 +249,29 @@ class Paths
 	{
 		var returnAsset:FlxGraphic = returnGraphic(key, library, locale);
 		return returnAsset;
+	}
+
+	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
+	{
+		#if FEATURE_FILESYSTEM
+		if (FileSystem.exists(getPreloadPath(key)))
+			return File.getContent(getPreloadPath(key));
+
+		if (currentLevel != null)
+		{
+			var levelPath:String = '';
+			if(currentLevel != 'shared') {
+				levelPath = getLibraryPathForce(key, currentLevel);
+				if (FileSystem.exists(levelPath))
+					return File.getContent(levelPath);
+			}
+
+			levelPath = getLibraryPathForce(key, 'shared');
+			if (FileSystem.exists(levelPath))
+				return File.getContent(levelPath);
+		}
+		#end
+		return Assets.getText(getPath(key, TEXT));
 	}
 
 	inline static public function font(key:String)

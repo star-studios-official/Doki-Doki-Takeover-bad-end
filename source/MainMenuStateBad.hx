@@ -147,7 +147,7 @@ class MainMenuStateBad extends MusicBeatState
 			var menuItem:FlxText = new FlxText(-350, 370 + (i * 50), 0, LangUtil.getString(optionShit[i], 'menu'));
 			menuItem.setFormat(LangUtil.getFont('riffic'), 27, FlxColor.WHITE, LEFT);
 			menuItem.antialiasing = SaveData.globalAntialiasing;
-			menuItem.setBorderStyle(OUTLINE, 0xFFFF7CFF, 2);
+			menuItem.setBorderStyle(OUTLINE, 0xFF9E9E9E, 2);
 			menuItem.ID = i;
 			menuItems.add(menuItem);
 
@@ -204,6 +204,8 @@ class MainMenuStateBad extends MusicBeatState
 		{
 			if (logoBl != null && FlxG.mouse.overlaps(logoBl) && FlxG.mouse.justPressed)
 			{
+				SaveData.badEndingSelected = false;
+				SaveData.save();
 				MusicBeatState.switchState(new TitleState());
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 			}
@@ -279,9 +281,9 @@ class MainMenuStateBad extends MusicBeatState
 		menuItems.forEach(function(txt:FlxText)
 		{
 			if (txt.ID == curSelected)
-				txt.setBorderStyle(OUTLINE, 0xFFFFCFFF, 2);
+				txt.setBorderStyle(OUTLINE, 0xFFC5C5C5, 2);
 			else
-				txt.setBorderStyle(OUTLINE, 0xFFFF7CFF, 2);
+				txt.setBorderStyle(OUTLINE, 0xFF9E9E9E, 2);
 		});
 	}
 
