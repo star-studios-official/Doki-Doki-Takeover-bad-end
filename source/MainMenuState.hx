@@ -303,6 +303,18 @@ class MainMenuState extends MusicBeatState
 			if (shaker != null && addVally && FlxG.mouse.overlaps(shaker) && FlxG.mouse.justPressed)
 				openSong();
 
+			if (logoBl != null && FlxG.mouse.overlaps(logoBl) && FlxG.mouse.justPressed && SaveData.beatYuri)
+			{
+				SaveData.badEndingSelected = true;
+				SaveData.save();
+				FlxG.sound.play(Paths.sound('confirmMenu'));
+
+				if (!SaveData.warningBadEnding)
+					MusicBeatState.switchState(new WarningState());
+				else
+					MusicBeatState.switchState(new TitleStateBad());
+			}
+
 			if (controls.UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));

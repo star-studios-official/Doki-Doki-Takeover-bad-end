@@ -79,8 +79,12 @@ class Init extends MusicBeatState
 
 			if (SaveData.cacheSong)
 				MusicBeatState.switchState(new CachingState());
-			else
-				MusicBeatState.switchState(new TitleState());
+			else {
+				if (!SaveData.badEndingSelected)
+					MusicBeatState.switchState(new TitleState());
+				else
+					MusicBeatState.switchState(new TitleStateBad());
+			}
 		}
 		#end
 	}

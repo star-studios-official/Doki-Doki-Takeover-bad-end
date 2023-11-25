@@ -1,0 +1,9 @@
+{
+    "song": {
+        "name": "Home",
+        "artist": "Kallionic",
+        "icon": "pen-evil",
+        "pause": "natsuki-crazy",
+        "allowCountDown": false
+    }
+}

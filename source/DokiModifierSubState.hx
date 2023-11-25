@@ -41,7 +41,10 @@ class DokiModifierSubState extends MusicBeatSubstate
 
 		instance = this;
 
-		DokiFreeplayState.instance.acceptInput = false;
+		if (!SaveData.badEndingSelected)
+			DokiFreeplayState.instance.acceptInput = false;
+		else
+			FreeplayState.instance.acceptInput = false;
 
 		for (i in modifierData)
 		{
@@ -91,7 +94,10 @@ class DokiModifierSubState extends MusicBeatSubstate
 			if (controls.BACK)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				DokiFreeplayState.instance.acceptInput = true;
+				if (!SaveData.badEndingSelected)
+					DokiFreeplayState.instance.acceptInput = true;
+				else
+					FreeplayState.instance.acceptInput = true;
 				SaveData.save();
 				close();
 			}

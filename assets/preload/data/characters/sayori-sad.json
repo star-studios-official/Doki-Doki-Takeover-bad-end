@@ -1,0 +1,134 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				181,
+				112
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "SadSayo Idle"
+		},
+		{
+			"offsets": [
+				176,
+				97
+			],
+			"indices": [
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"fps": 24,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "SadSayo Down"
+		},
+		{
+			"offsets": [
+				188,
+				103
+			],
+			"indices": [
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "SadSayo Left"
+		},
+		{
+			"offsets": [
+				169,
+				98
+			],
+			"indices": [
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"loop": false,
+			"name": "SadSayo Right"
+		},
+		{
+			"offsets": [
+				179,
+				107
+			],
+			"indices": [
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"fps": 24,
+			"anim": "singUP",
+			"loop": false,
+			"name": "SadSayo Up"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/badending/SadSayo_Assets",
+	"position": [
+		200,
+		-40
+	],
+	"healthicon": "sayori-sad",
+	"flip_x": false,
+	"healthbar_colors": [
+		89,
+		122,
+		142
+	],
+	"camera_position": [
+		-100,
+		-100
+	],
+	"sing_duration": 4,
+	"scale": 1.1
+}

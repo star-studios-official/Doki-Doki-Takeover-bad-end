@@ -100,7 +100,10 @@ class PauseSubState extends MusicBeatSubstate
 		Conductor.changeBPM(124);
 		*/
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('disco'), true, true);
+		if (!SaveData.badEndingSelected)
+			pauseMusic = new FlxSound().loadEmbedded(Paths.music('disco'), true, true);
+		else
+			pauseMusic = new FlxSound().loadEmbedded(Paths.music('ghost'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play();
 
@@ -207,22 +210,30 @@ class PauseSubState extends MusicBeatSubstate
 			levelInfo.visible = false;
 		}
 
-		logo = new FlxSprite(-260, 0).loadGraphic(Paths.image('Credits_LeftSide'));
+		if (!SaveData.badEndingSelected) {
+			logo = new FlxSprite(-260, 0).loadGraphic(Paths.image('Credits_LeftSide'));
+
+			logoBl = new FlxSprite(-160, -40);
+			logoBl.frames = Paths.getSparrowAtlas('DDLCStart_Screen_Assets');
+		} else {
+			logo = new FlxSprite(-260, 0).loadGraphic(Paths.image('Credits_LeftSide_Bad'));
+
+			logoBl = new FlxSprite(-160, -40);
+			logoBl.frames = Paths.getSparrowAtlas('logoBadEnding');
+		}
 		logo.antialiasing = SaveData.globalAntialiasing;
 		add(logo);
 
-		FlxTween.tween(logo, {x: -60}, 1.2, {
-			ease: FlxEase.elasticOut
-		});
-
-		logoBl = new FlxSprite(-160, -40);
-		logoBl.frames = Paths.getSparrowAtlas('DDLCStart_Screen_Assets');
 		logoBl.antialiasing = SaveData.globalAntialiasing;
 		logoBl.scale.set(0.5, 0.5);
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, true);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		add(logoBl);
+
+		FlxTween.tween(logo, {x: -60}, 1.2, {
+			ease: FlxEase.elasticOut
+		});
 
 		FlxTween.tween(logoBl, {x: 40}, 1.2, {
 			ease: FlxEase.elasticOut
@@ -310,6 +321,11 @@ class PauseSubState extends MusicBeatSubstate
 				else
 					txt.setFormat(LangUtil.getFont('waifu'), 32, FlxColor.WHITE, LEFT);
 			});
+		}
+
+		if (SaveData.badEndingSelected) {
+			itmColor = 0xFF9E9E9E;
+			selColor = 0xFFC5C5C5;
 		}
 
 		changeSelection();
@@ -425,10 +441,17 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.toggleBotplay = false;
 					PlayState.ForceDisableDialogue = false;
 
-					if (PlayState.isStoryMode)
-						MusicBeatState.switchState(new DokiStoryState());
-					else
-						MusicBeatState.switchState(new DokiFreeplayState());
+					if (!SaveData.badEndingSelected) {
+						if (PlayState.isStoryMode)
+							MusicBeatState.switchState(new DokiStoryState());
+						else
+							MusicBeatState.switchState(new DokiFreeplayState());
+					} else {
+						if (PlayState.isStoryMode)
+							MusicBeatState.switchState(new MainMenuStateBad());
+						else
+							MusicBeatState.switchState(new FreeplayState());
+					}
 				case "Easy" | "Normal" | "Hard":
 					try
 					{
