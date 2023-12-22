@@ -2015,7 +2015,7 @@ class PlayState extends MusicBeatState
 		{
 			staticlol = new StaticShader();
 			camGame.setFilters([new ShaderFilter(staticlol)]);
-			camCache.setFilters([new ShaderFilter(staticlol)]);
+			// camCache.setFilters([new ShaderFilter(staticlol)]);
 			staticlol.alpha.value = [staticAlpha];
 
 			daStatic = new BGSprite('daSTAT', 'preload', 0, 0, 1.0, 1.0, ['staticFLASH'], true);
